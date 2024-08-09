@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Tree view of Education Medium-->
+    <record id="education_medium_view_tree" model="ir.ui.view">
+        <field name="name">education.medium.view.tree</field>
+        <field name="model">education.medium</field>
+        <field name="arch" type="xml">
+            <tree string="Medium" editable="bottom">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <!--Menu action of Education Medium-->
+    <record id="education_medium_action" model="ir.actions.act_window">
+        <field name="name">Medium</field>
+        <field name="res_model">education.medium</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create your first medium here.
+            </p>
+        </field>
+    </record>
+    <menuitem id="education_medium_menu" action="education_medium_action"
+              parent="menu_education_main_menu"
+              sequence="22"/>
+</odoo>

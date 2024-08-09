@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Academic Year demo-->
+        <record id="education_academic_year_data" model="education.academic.year">
+            <field name="name">2024-25</field>
+            <field name="sequence">1</field>
+            <field name="ay_start_date">2024-01-01</field>
+            <field name="ay_end_date">2025-12-31</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>
