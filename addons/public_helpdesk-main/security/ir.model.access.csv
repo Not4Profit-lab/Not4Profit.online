@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_public_user_issue_type,access.public.user.issue.type,helpdesk_basic.model_issue_type,base.group_public,1,0,0,0
+access_public_user_helpdesk_team,access.public.user.helpdesk.team,helpdesk_basic.model_helpdesk_team,base.group_public,1,0,0,0
+access_public_user_helpdesk_ticket,access.public.user.helpdesk.ticket,helpdesk_basic.model_helpdesk_ticket,base.group_public,1,0,1,0
