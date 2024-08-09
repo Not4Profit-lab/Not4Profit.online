@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<flectra>
+    <data>
+        <record id="view_res_partner_form_inherit_membership" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.membership</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="rotary_project_map.view_partner_form_inherit_club_type"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='free_member']" position="attributes">
+                    <attribute name="string">Is Member</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='membership']/group" position="inside">
+                    <group>
+                        <field name="membership_club_type"/>
+                        <field name="club_type_selected" invisible="1"/>
+                        <field name="membership_club_name" attrs="{'invisible': [('club_type_selected', '=', False)]}"/>
+                    </group>
+                </xpath>
+                <xpath expr="//notebook/page[@name='club_information']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('free_member','=',True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</flectra>
