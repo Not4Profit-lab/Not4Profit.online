@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <template id="rotary_project_map">
+
+        <!-- Include Font Awesome CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+        <link rel="stylesheet" href="/rotary_project_map/static/src/css/rotary_project_map.css"/>
+        
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure" id="oe_structure_website_sale_2">
+                    <div class="container mt16">
+
+                        <!-- Page Title -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1 class="text-center">RAWCS Project Map</h1>
+                            </div>
+                        </div>
+
+                        <!-- Page Description -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-center">
+                                    This interactive map provides a visualization of various Rotary Projects. 
+                                    Each marker on the map represents a Project's location. Click on the markers to get more information.
+                                </p>
+                            </div>
+                        </div>
+             
+                        <!-- Selection and Search Box -->
+                        <div class="row" style="padding-bottom:15px;">
+                            <div class="col-md-6 text-center">
+                                <select class="form-control custom-select" style="max-width: 100%; margin: 0 auto;">
+                                    <option selected="selected">--Select--</option>
+                                    <option>Sponsoring Club's Projects</option>
+                                    <option>Project's Sponsoring Clubs</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="input-group" style="max-width: 100%; margin: 0 auto;">
+                                    <input type="text" id="search-box" class="form-control" placeholder="Search Projects..."/>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map Related -->
+                        <div style="padding-bottom:15px;">                               
+                            <div id="map" style="height: 50vh; width: 100%;"></div>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </t>
+        <script type="text/javascript">
+            var partnersData = <t t-raw="json.dumps(partners_data)"/>;
+        </script>
+        <script async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDt0eWfnCqJ2_lccobdRVVdhbma7Fxmr1g&amp;callback=initMap"></script>
+        <script src="/rotary_project_map/static/src/js/rotary_project_map.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    </template>
+</flectra>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+
+        <record id="rotary_project_map.view_partner_form_inherit_club_type" model="ir.ui.view">
+            <field name="name">Add Club Information to res.partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- If rotary_club_id is empty then make group invisible. -->
+                <xpath expr="//group[field[@name='type']]" position="before">
+                    <group attrs="{'invisible': [('rotary_club_id', '=', False)]}">
+                        <field name="rotary_club_id" options="{'no_open': True, 'no_create': True}" readonly="1" />
+                    </group>
+                </xpath>
+
+                <!-- Add Club Information Group -->
+                <xpath expr="//page[@name='sales_purchases']" position="before">
+                    <page name="club_information" string="Club Information" attrs="{'invisible': [('rotary_club_id', '!=', False)]}">
+                        <group>
+                            <group>
+                                <field name="club_name"/>
+                                <field name="club_id"/>
+                                <field name="charter_date"/>
+                                <field name="club_type"/>
+                            </group>
+                            <group>
+                                <field name="club_longitude"/>
+                                <field name="club_latitude"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+                <!-- If rotary_membership_id is empty then make group invisible. -->
+                <xpath expr="//page[@name='membership']/group/group[field[@name='free_member']]" position="before">                    
+                    <group attrs="{'invisible': [('rotary_membership_id', '=', False)]}">
+                        <field name="rotary_membership_id" options="{'no_open': True, 'no_create': True}" readonly="1" />                        
+                    </group>                
+                </xpath>
+
+            </field>
+        </record>
+        
+    </data>
+</flectra>

@@ -1,0 +1,10 @@
+.custom-select {
+    text-align-last: left; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    text-align: left;
+    text-align: -webkit-left; /* Safari and Chrome */
+}
+
+.custom-select option {
+    text-align: left; /* Firefox */
+}
