@@ -1,7 +1,7 @@
 {
     'name': 'Public Helpdesk',
     'version': '1.0',
-    'author': 'Nathan Stocking',
+    'author': 'Verinsure',
     'category': 'Helpdesk',
     'summary': 'Public access to helpdesk form',
     'website': '',

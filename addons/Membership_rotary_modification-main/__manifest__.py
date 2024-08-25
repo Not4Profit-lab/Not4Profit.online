@@ -5,7 +5,7 @@
     'summary': 'Changes to membership module for Rotary NZ.',
     'sequence': '',
     'license': '',
-    'author': 'Nathan Stocking',
+    'author': 'Verinsure',
     'website': 'techcertain.com',
     'depends': ['base', 'membership', 'ldap_reset_password'],
     'data': [

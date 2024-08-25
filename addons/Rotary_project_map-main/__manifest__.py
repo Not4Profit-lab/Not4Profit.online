@@ -3,7 +3,7 @@
     'version': '1.0',
     'category': 'Extra Tools',
     'summary': 'Rotary Project Map integration with Google Maps',
-    'author': 'Nathan Stocking',
+    'author': 'Verinsure',
     'website': '',
     'license': '',
     'depends': ['base', 'membership', 'project'],
