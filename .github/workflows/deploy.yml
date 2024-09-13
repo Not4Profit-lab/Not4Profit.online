@@ -1,0 +1,39 @@
+name: Deploy Odoo Modules
+
+on:
+  push:
+    branches:
+      - main # You can change this to the branch you want to deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8' # Odoo 17 uses Python 3.8
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        python3 -m venv odoo-venv
+        source odoo-venv/bin/activate
+        pip install -r requirements.txt # If you have a requirements file
+
+    - name: Update Repository on Server
+      run: |
+          ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Restart Odoo Service
+      run: |
+            ssh -o StrictHostKeyChecking=no root@103.19.4.104 'sudo systemctl restart odoo'
+      env:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
