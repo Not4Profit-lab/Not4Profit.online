@@ -1,3 +1,10 @@
+name: Deploy Odoo Modules
+
+on:
+  push:
+    branches:
+      - main # The branch you want to deploy from
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,7 +28,7 @@ jobs:
         wget -q https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
         sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
 
-    - name: Debug Step: List files to check current directory
+    - name: List files to check current directory
       run: |
         echo "Current Directory: $(pwd)"
         echo "Listing files in the workspace directory"
