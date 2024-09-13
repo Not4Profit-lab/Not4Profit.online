@@ -24,14 +24,9 @@ jobs:
         sudo apt-get install -y python3-pip
         python3 -m venv odoo-venv
         source odoo-venv/bin/activate
-         pip install -r /opt/odoo/requirements.txt
+         pip install -r requirements.txt
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
+
 
 
     - name: Update Repository on Server
@@ -40,8 +35,8 @@ jobs:
       env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Restart Odoo Service
+    - name: Restart Odoo
       run: |
-            ssh -o StrictHostKeyChecking=no root@103.19.4.104 'sudo systemctl restart odoo'
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@103.19.4.104 'sudo systemctl restart odoo'
       env:
             SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
