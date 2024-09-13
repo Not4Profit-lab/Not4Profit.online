@@ -34,7 +34,7 @@ jobs:
       run: |
             pip install wheel
             pip install cryptography
-            pip install -r requirements.txt
+            pip install -r /opt/odoo/requirements.txt  # Make sure to use the correct path
 
 
 
