@@ -26,6 +26,14 @@ jobs:
         source odoo-venv/bin/activate
         pip install -r requirements.txt # If you have a requirements file
 
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
+
+
     - name: Update Repository on Server
       run: |
           ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
