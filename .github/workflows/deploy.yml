@@ -18,6 +18,8 @@ jobs:
       with:
         python-version: '3.8' # Odoo 17 uses Python 3.8
 
+    
+
     - name: Install system dependencies
       run: |
           sudo apt-get update
@@ -30,10 +32,13 @@ jobs:
             wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
             sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
   
-            - name: Debug Step: List files to check if requirements.txt exists
-             run: |
-                  echo "Current Directory: $(pwd)"
-                  ls -la
+    - name: List files to check if requirements.txt exists
+      run: |
+              echo "Current Directory: $(pwd)"
+              echo "Listing files in /opt/odoo"
+              ls -la /opt/odoo
+              echo "Listing files in the root directory"
+              ls -la / 
 
     - name: Install Odoo dependencies
       run: |
