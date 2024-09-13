@@ -27,7 +27,6 @@ jobs:
          pip install -r /opt/odoo/requirements.txt
 
 
-
     - name: Update Repository on Server
       run: |
           ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
