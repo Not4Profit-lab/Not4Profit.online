@@ -1,33 +1,58 @@
-name: Odoo Module Deployment
+name: CI/CD Pipeline for Odoo 17
 
 on:
   push:
     branches:
-      - main  # Adjust to your branch as needed
+      - main
+    
+  pull_request:
+    branches:
+      - main
+     
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup SSH Key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+      - name: Set up Python
+        uses: actions/setup-python@v2 
+        with:
+          python-version: '3.10'
 
-    - name: Test SSH Connection
-      run: |
-        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget git python3-dev python3-pip build-essential libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev libpq-dev
 
-    - name: Deploy to Odoo server
-      run: |
-        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "
-        cd /opt/odoo &&
-        pip install -r requirements.txt &&
-        cd /opt/odoo/addons &&
-        git pull origin main &&
-        systemctl restart odoo"
+      - name: Install wkhtmltopdf
+        run: |
+          wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+          sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
+
+      - name: Install Odoo dependencies
+        run: |
+          pip install wheel
+          pip install cryptography
+          pip install -r requirements.txt
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with: 
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add SSH Known Hosts
+        run: |
+          ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
+
+      - name: Deploy updated files to Odoo server
+        run: |
+          scp -r addons/event root@103.19.4.104:/opt/odoo/addons/
+         
+
+      - name: Restart Odoo service
+        run: |
+          ssh root@103.19.4.104 'systemctl restart odoo'
