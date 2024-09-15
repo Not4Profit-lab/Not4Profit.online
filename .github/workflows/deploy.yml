@@ -3,7 +3,7 @@ name: Odoo Module Deployment
 on:
   push:
     branches:
-      - main  # Adjust this as necessary
+      - main  # Adjust to your branch as needed
 
 jobs:
   deploy:
@@ -13,13 +13,21 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Test SSH Connection
+      run: |
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
+
     - name: Deploy to Odoo server
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} root@103.19.4.104 "
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "
         cd /opt/odoo &&
         pip install -r requirements.txt &&
         cd /opt/odoo/addons &&
         git pull origin main &&
         systemctl restart odoo"
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
