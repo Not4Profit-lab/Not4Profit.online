@@ -3,7 +3,7 @@ name: Odoo Module Deployment
 on:
   push:
     branches:
-      - main  # Trigger pipeline on push to the main branch (adjust as necessary)
+      - main  # Adjust based on your branch
 
 jobs:
   deploy:
@@ -18,14 +18,11 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r /opt/odoo/requirements.txt
-
     - name: Deploy to Odoo server
       run: |
         ssh -o StrictHostKeyChecking=no root@103.19.4.104 "
+        cd /opt/odoo &&
+        pip install -r requirements.txt &&  # Install requirements directly on the Odoo server
         cd /opt/odoo/addons &&
         git clone https://github.com/Not4Profit-lab/Not4Profit.online.git &&
         systemctl restart odoo"
