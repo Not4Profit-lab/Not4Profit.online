@@ -35,9 +35,9 @@ jobs:
 
       - name: Install Odoo dependencies
         run: |
-          pip install wheel
-          pip install cryptography
-          pip install -r requirements.txt
+            ssh root@103.19.4.104 'pip install wheel cryptography'
+            ssh root@103.19.4.104 'pip install -r /opt/odoo/requirements.txt'
+        
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
