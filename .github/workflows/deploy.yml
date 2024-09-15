@@ -3,7 +3,7 @@ name: Deploy Odoo Modules
 on:
   push:
     branches:
-      - main # The branch you want to deploy from
+      - main  # The branch you want to deploy from
 
 jobs:
   deploy:
@@ -16,30 +16,30 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8' # Odoo 17 uses Python 3.8
+        python-version: '3.8'  # Odoo 17 uses Python 3.8
 
-    - name: Install system dependencies
+    - name: Install system dependencies on GitHub runner (if needed)
       run: |
         sudo apt-get update
         sudo apt-get install -y wget git python3-dev python3-pip build-essential libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev libpq-dev
 
-    - name: Install wkhtmltopdf
+    - name: Install wkhtmltopdf on GitHub runner (if needed)
       run: |
         wget -q https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
         sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
 
-    - name: List files to check current directory
-      run: |
-        echo "Current Directory: $(pwd)"
-        echo "Listing files in the workspace directory"
-        ls -la
+    #- name: Debug Step: Check current directory and list files
+      #run: |
+       # echo "Current Directory: $(pwd)"
+        #echo "Listing files in the workspace directory"
+        #ls -la
 
-    - name: Install Odoo dependencies
+    # SSH into the production server to install dependencies and deploy the code
+    - name: Install Python dependencies on server
       run: |
-        cd /opt/odoo || exit 1  # Ensure this directory exists
-        pip install wheel
-        pip install cryptography
-        pip install -r requirements.txt
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo && pip install -r requirements.txt'
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Update Repository on Server
       run: |
@@ -47,8 +47,8 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Restart Odoo
+    - name: Restart Odoo Service
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@103.19.4.104 'sudo systemctl restart odoo'
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'sudo systemctl restart odoo'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
