@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-    
   pull_request:
     branches:
       - main
-     
 
 jobs:
   build:
@@ -19,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v2 
+        uses: actions/setup-python@v2
         with:
           python-version: '3.10'
 
@@ -33,26 +31,23 @@ jobs:
           wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
           sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
 
-      - name: Install Odoo dependencies
-        run: |
-            ssh root@103.19.4.104 'pip install wheel cryptography'
-            ssh root@103.19.4.104 'pip install -r /opt/odoo/requirements.txt'
-        
-
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with: 
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          
       - name: Add SSH Known Hosts
         run: |
           ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
 
-      - name: Deploy updated files to Odoo server
+      - name: Deploy updated modules to Odoo server
         run: |
           scp -r addons/event root@103.19.4.104:/opt/odoo/addons/
          
 
-      - name: Restart Odoo service
+      # You can add additional steps here if necessary, but avoid the pip install step if not required
+
+      # Optional: Restart Odoo server if needed
+      - name: Restart Odoo server
         run: |
-          ssh root@103.19.4.104 'systemctl restart odoo'
+          ssh root@103.19.4.104 'sudo systemctl restart odoo'
