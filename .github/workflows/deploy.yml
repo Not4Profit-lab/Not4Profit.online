@@ -34,11 +34,11 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-    - name: Test SSH Connection
-      run: |
-        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
+    #- name: Test SSH Connection
+     # run: |
+      #  ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
 
-        
+
     # SSH into the production server to install dependencies and deploy the code
     - name: Install Python dependencies on server
       run: |
