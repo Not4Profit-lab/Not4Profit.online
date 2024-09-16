@@ -1,53 +1,59 @@
-name: CI/CD Pipeline for Odoo 17
+name: Deploy Odoo Modules
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main  # The branch you want to deploy from
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # Odoo 17 uses Python 3.8
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget git python3-dev python3-pip build-essential libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev libpq-dev
+    - name: Install system dependencies on GitHub runner (if needed)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget git python3-dev python3-pip build-essential libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev libpq-dev
 
-      - name: Install wkhtmltopdf
-        run: |
-          wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
-          sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
+    - name: Install wkhtmltopdf on GitHub runner (if needed)
+      run: |
+        wget -q https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+        sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with: 
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          
-      - name: Add SSH Known Hosts
-        run: |
-          ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
+    - name: Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
-      - name: Deploy updated modules to Odoo server
-        run: |
-          scp -r addons/event root@103.19.4.104:/opt/odoo/addons/
-         
+    - name: Test SSH Connection
+      run: |
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
 
-      # You can add additional steps here if necessary, but avoid the pip install step if not required
+        
+    # SSH into the production server to install dependencies and deploy the code
+    - name: Install Python dependencies on server
+      run: |
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo && pip install -r requirements.txt'
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Optional: Restart Odoo server if needed
-      - name: Restart Odoo server
-        run: |
-          ssh root@103.19.4.104 'sudo systemctl restart odoo'
+    - name: Update Repository on Server
+      run: |
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Restart Odoo Service
+      run: |
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'sudo systemctl restart odoo'
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
