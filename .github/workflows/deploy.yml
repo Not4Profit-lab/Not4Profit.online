@@ -40,10 +40,17 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # Step 6: Add SSH Known Hosts (your server's IP address)
+    # Step 6: Ensure the ~/.ssh directory exists and set permissions
+    - name: Create SSH directory
+      run: |
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
+
+    # Step 7: Add SSH Known Hosts (your server's IP address)
     - name: Add SSH Known Hosts
       run: |
         ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts
 
     # Step 7: Test SSH Connection to the production server
     #- name: Test SSH Connection
