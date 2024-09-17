@@ -10,51 +10,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout the code from the GitHub repository
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # Step 2: Set up Python (Odoo 17 uses Python 3.8)
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'  # Odoo 17 uses Python 3.8
+        python-version: '3.8'
 
+    # Step 3: Install system dependencies on the GitHub runner
     - name: Install system dependencies on GitHub runner (if needed)
       run: |
         sudo apt-get update
-        sudo apt-get install -y wget git python3-dev python3-pip build-essential libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev libpq-dev
+        sudo apt-get install -y wget git python3-dev python3-pip build-essential \
+          libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less \
+          libjpeg-dev libpq-dev
 
+    # Step 4: Install wkhtmltopdf (required for generating PDFs in Odoo)
     - name: Install wkhtmltopdf on GitHub runner (if needed)
       run: |
         wget -q https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
         sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
 
-    - name: Setup SSH Key
+    # Step 5: Set up SSH using webfactory/ssh-agent
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    # Step 6: Add SSH Known Hosts (your server's IP address)
+    - name: Add SSH Known Hosts
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
 
-    - name: Test SSH Connection
-      run: |
-          ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 "echo 'SSH connection successful'"
-      
+    # Step 7: Test SSH Connection to the production server
+    #- name: Test SSH Connection
+    #  run: |
+    #    ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 "echo 'SSH connection successful'"
 
-
-    # SSH into the production server to install dependencies and deploy the code
+    # Step 8: SSH into the production server to install Python dependencies
     - name: Install Python dependencies on server
       run: |
-        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo && pip install -r requirements.txt'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 'cd /opt/odoo && pip install -r requirements.txt'
 
+    # Step 9: Update the repository on the server (pull the latest changes)
     - name: Update Repository on Server
       run: |
-        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
 
+    # Step 10: Restart the Odoo service on the server
     - name: Restart Odoo Service
       run: |
-        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'sudo systemctl restart odoo'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 'sudo systemctl restart odoo'
