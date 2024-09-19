@@ -41,13 +41,15 @@ jobs:
         chmod 700 ~/.ssh
         ls -la ~/.ssh
 
-    # Check if SSH port is accessible
-    
+    # Check if the server is reachable
+    - name: Check server reachability
+      run: |
+        ping -c 3 103.19.4.104 || { echo "Server unreachable"; exit 1; }
 
     # Add SSH Known Hosts (your server's IP address)
     - name: Add SSH Known Hosts
       run: |
-        ssh-keyscan -v -H 103.19.4.104 >> ~/.ssh/known_hosts
+        ssh-keyscan -v -H 103.19.4.104 >> ~/.ssh/known_hosts || { echo "SSH Keyscan failed"; exit 1; }
         chmod 644 ~/.ssh/known_hosts
         cat ~/.ssh/known_hosts
 
@@ -56,23 +58,17 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
 
-    # Install Python dependencies on the server
+    # Install Python dependencies on the server (with virtual environment)
     - name: Install Python dependencies on server
       run: |
-        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo && pip install -r requirements.txt'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'source /opt/odoo/venv/bin/activate && cd /opt/odoo && pip install -r requirements.txt'
 
     # Update the Odoo repository on the server
     - name: Update Repository on Server
       run: |
         ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # Restart Odoo service
     - name: Restart Odoo Service
       run: |
         ssh -o StrictHostKeyChecking=no root@103.19.4.104 'sudo systemctl restart odoo'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
