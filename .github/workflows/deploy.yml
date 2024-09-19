@@ -44,32 +44,32 @@ jobs:
     # Add SSH Known Hosts (your server's IP address)
     - name: Add SSH Known Hosts
       run: |
-        ssh-keyscan -v -p 8001 -H 103.19.4.104 >> ~/.ssh/known_hosts
+        ssh-keyscan -v -H 103.19.4.104 >> ~/.ssh/known_hosts
         chmod 644 ~/.ssh/known_hosts
         cat ~/.ssh/known_hosts
 
     # Test SSH Connection using port 8001
     - name: Test SSH Connection
       run: |
-        ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 "echo 'SSH connection successful'"
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
 
     # Install Python dependencies on the server
     - name: Install Python dependencies on server
       run: |
-        ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 'cd /opt/odoo && pip install -r requirements.txt'
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 'cd /opt/odoo && pip install -r requirements.txt'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # Update the Odoo repository on the server
     - name: Update Repository on Server
       run: |
-        ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
+        ssh -o StrictHostKeyChecking=no  root@103.19.4.104 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # Restart Odoo service
     - name: Restart Odoo Service
       run: |
-        ssh -o StrictHostKeyChecking=no -p 8001 root@103.19.4.104 'sudo systemctl restart odoo'
+        ssh -o StrictHostKeyChecking=no  root@103.19.4.104 'sudo systemctl restart odoo'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
