@@ -35,18 +35,17 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # Create SSH directory, set permissions, and debug output
-    - name: Create SSH directory
-      run: |
-        mkdir -p ~/.ssh
-        chmod 700 ~/.ssh
-        ls -la ~/.ssh
+    # run: |
+     #   mkdir -p ~/.ssh
+     #   chmod 700 ~/.ssh
+      #  ls -la ~/.ssh
 
     # Add SSH Known Hosts (your server's IP address)
-    - name: Add SSH Known Hosts
-      run: |
-        ssh-keyscan -v -H 103.19.4.104 >> ~/.ssh/known_hosts
-        chmod 644 ~/.ssh/known_hosts
-        cat ~/.ssh/known_hosts
+    #- name: Add SSH Known Hosts
+    #  run: |
+    #    ssh-keyscan -v -H 103.19.4.104 >> ~/.ssh/known_hosts
+    #    chmod 644 ~/.ssh/known_hosts
+    #    cat ~/.ssh/known_hosts
 
     # Test SSH Connection using port 8001
     - name: Test SSH Connection
