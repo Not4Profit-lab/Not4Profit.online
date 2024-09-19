@@ -44,7 +44,7 @@ jobs:
     # Check if SSH port is accessible
     - name: Check if SSH port is open
       run: |
-        nc -zv 103.19.4.104 22
+        nc -zv 103.19.4.104 8001
 
     # Add SSH Known Hosts (your server's IP address)
     - name: Add SSH Known Hosts
@@ -56,7 +56,7 @@ jobs:
     # Test SSH Connection
     - name: Test SSH Connection
       run: |
-        ssh -o StrictHostKeyChecking=no -p 22 root@103.19.4.104 "echo 'SSH connection successful'"
+        ssh -o StrictHostKeyChecking=no root@103.19.4.104 "echo 'SSH connection successful'"
 
     # Install Python dependencies on the server
     - name: Install Python dependencies on server
