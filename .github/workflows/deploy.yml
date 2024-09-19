@@ -42,9 +42,7 @@ jobs:
         ls -la ~/.ssh
 
     # Check if SSH port is accessible
-    - name: Check if SSH port is open
-      run: |
-        nc -zv 103.19.4.104
+    
 
     # Add SSH Known Hosts (your server's IP address)
     - name: Add SSH Known Hosts
