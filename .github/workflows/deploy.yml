@@ -50,25 +50,25 @@ jobs:
     # Test SSH Connection using port 8001
     - name: Test SSH Connection
       run: |
-        ssh -o StrictHostKeyChecking=no root@ 10.221.32.10 "echo 'SSH connection successful'"
+        ssh -o StrictHostKeyChecking=no root@10.221.32.10 "echo 'SSH connection successful'"
 
     # Install Python dependencies on the server
     - name: Install Python dependencies on server
       run: |
-        ssh -o StrictHostKeyChecking=no root@ 10.221.32.10 'cd /opt/odoo && pip install -r requirements.txt'
+        ssh -o StrictHostKeyChecking=no root@10.221.32.10 'cd /opt/odoo && pip install -r requirements.txt'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # Update the Odoo repository on the server
     - name: Update Repository on Server
       run: |
-        ssh -o StrictHostKeyChecking=no  root@ 10.221.32.10 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
+        ssh -o StrictHostKeyChecking=no  root@10.221.32.10 'cd /opt/odoo/addons/Not4Profit.online && git pull origin main'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # Restart Odoo service
     - name: Restart Odoo Service
       run: |
-        ssh -o StrictHostKeyChecking=no  root@ 10.221.32.10 'sudo systemctl restart odoo'
+        ssh -o StrictHostKeyChecking=no  root@10.221.32.10 'sudo systemctl restart odoo'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
