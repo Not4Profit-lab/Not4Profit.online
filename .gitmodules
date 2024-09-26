@@ -1,0 +1,3 @@
+[submodule "addons/dms"]
+	path = addons/dms
+	url = https://github.com/OCA/dms.git
