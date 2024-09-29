@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy DMS Module
         run: |
-            rsync -avz --delete --exclude='.git*' ./addons/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
+            rsync -avz --delete --exclude='.git*' ./addons/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons
     
 
         
