@@ -35,9 +35,9 @@ jobs:
         run: |
           # Copy only the dms and dms_storage folders from the DMS-branch
           rsync -avz --delete --exclude='.git*' ./addons/dms/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
-          rsync -avz --delete --exclude='.git*' ./addons/dms/dms_storage/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms_storage/
+          rsync -avz --delete --exclude='.git*' ./addons/dms/dms_storage/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
 
-          
+
       - name: Update Odoo Database
         run: |
           ssh root@103.19.4.104 "sudo -u odoo /opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u dms,dms_storage"
