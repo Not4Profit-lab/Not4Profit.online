@@ -26,6 +26,11 @@ jobs:
         run: |
           ssh root@103.19.4.104 "sudo systemctl stop odoo || sudo pkill -f '/opt/odoo/odoo-bin'"
 
+      - name: Check directory contents
+        run: |
+          ls -R ./addons/
+
+
       - name: Deploy DMS Modules to Odoo Server
         run: |
           # Copy only the dms and dms_storage folders from the DMS-branch
