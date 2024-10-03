@@ -29,6 +29,12 @@ jobs:
       - name: Deploy to Odoo Server
         run: |
             rsync -avz --delete --exclude='.git*' . root@103.19.4.104:/opt/odoo/addons/Not4Profit.online
+             
+            
+      - name: Deploy DMS to Odoo Server
+        run: |
+            rsync -avz --delete --exclude='.git*' ./addons/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
+
 
       #- name: Deploy to Odoo Server
        # run: |
