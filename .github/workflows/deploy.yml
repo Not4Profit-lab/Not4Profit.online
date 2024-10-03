@@ -45,7 +45,7 @@ jobs:
 
       - name: Update Odoo Database
         run: |
-            ssh root@103.19.4.104 "sudo -u odoo /opt/odoo/odoo-bin -c /etc/odoo/odoo.conf -d Not4ProfitOrganisation -u all"
+            ssh root@103.19.4.104 "sudo -u odoo /opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u all"
         
       - name: Start Odoo Server #just edit this
         run: |
