@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy DMS Modules to Odoo Server
         run: |
-              scp -r addons/dms root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons
+              scp -r addons/dms root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms
           # Copy only the dms and dms_storage folders from the DMS-branch
       #    rsync -avz --delete --exclude='.git*' ./addons/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
    #       rsync -avz --delete --exclude='.git*' ./addons/dms/dms_storage/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
