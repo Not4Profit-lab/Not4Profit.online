@@ -38,9 +38,9 @@ jobs:
    #       rsync -avz --delete --exclude='.git*' ./addons/dms/dms_storage/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
 
 
-      - name: Update Odoo Database
-        run: |
-          ssh root@103.19.4.104 "sudo -u odoo /opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u dms,dms_storage"
+     # - name: Update Odoo Database
+     #   run: |
+      #    ssh root@103.19.4.104 "sudo -u odoo /opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u dms,dms_storage"
 
       - name: Start Odoo Server
         run: |
