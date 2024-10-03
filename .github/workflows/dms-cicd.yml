@@ -1,0 +1,41 @@
+name: CI/CD Pipeline for DMS Branch (DMS Modules Only)
+
+on:
+  push:
+    branches:
+      - DMS-branch  # This pipeline runs only on the DMS-branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code from DMS-branch
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
+
+      - name: Stop Odoo Server
+        run: |
+          ssh root@103.19.4.104 "sudo systemctl stop odoo || sudo pkill -f '/opt/odoo/odoo-bin'"
+
+      - name: Deploy DMS Modules to Odoo Server
+        run: |
+          # Copy only the dms and dms_storage folders from the DMS-branch
+          rsync -avz --delete --exclude='.git*' ./addons/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
+          rsync -avz --delete --exclude='.git*' ./addons/dms_storage/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms_storage/
+
+      - name: Update Odoo Database
+        run: |
+          ssh root@103.19.4.104 "sudo -u odoo /opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u dms,dms_storage"
+
+      - name: Start Odoo Server
+        run: |
+          ssh root@103.19.4.104 "sudo systemctl start odoo"
