@@ -26,14 +26,13 @@ jobs:
         run: |
             ssh root@103.19.4.104 "sudo systemctl stop odoo || sudo pkill -f '/opt/odoo/odoo-bin'"
         
+      #- name: Deploy to Odoo Server
+       # run: |
+       #     rsync -avz --delete --exclude='.git*' . root@103.19.4.104:/opt/odoo/addons/Not4Profit.online
+
       - name: Deploy to Odoo Server
         run: |
-            rsync -avz --delete --exclude='.git*' . root@103.19.4.104:/opt/odoo/addons/Not4Profit.online
-
-      - name: Install DMS Module
-        run: |
-          ssh root@103.19.4.104 "/opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u dms"
-
+           rsync -avz --exclude='.git*' . root@103.19.4.104:/opt/odoo/addons/Not4Profit.online
 
         
       - name: Start Odoo Server #just edit this
