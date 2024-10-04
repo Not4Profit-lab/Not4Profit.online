@@ -32,7 +32,7 @@ jobs:
 
       - name: Deploy to Odoo Server
         run: |
-          scp -r ./addons/* root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons
+          scp -r ./addons/* root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
           
       - name: Update Odoo Database
         run: |
