@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for odoo17
+name: CI/CD Pipeline for Odoo 17
 
 on:
   push:
@@ -13,6 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt 
+
       - name: Set up SSH key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -24,30 +28,17 @@ jobs:
 
       - name: Stop Odoo Server
         run: |
-            ssh root@103.19.4.104 "sudo systemctl stop odoo || sudo pkill -f '/opt/odoo/odoo-bin'"
-        
+          ssh root@103.19.4.104 "sudo systemctl stop odoo || sudo pkill -f '/opt/odoo/odoo-bin'"
+
       - name: Deploy to Odoo Server
         run: |
-            rsync -avz --delete --exclude='.git*' . root@103.19.4.104:/opt/odoo/addons/Not4Profit.online
-             
-            
-      #- name: Deploy DMS to Odoo Server
-      #  run: |
-       #     rsync -avz --delete --exclude='.git*' ./addons/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
-
-      #- name: Deploy to Odoo Server
-       # run: |
-       #    rsync -avz --exclude='.git*' . root@103.19.4.104:/opt/odoo/addons/Not4Profit.online
-
-      #- name: Deploy DMS to Odoo Server
-       # run: |
-        #    rsync -avz --exclude='.git*' ./addons/dms/ root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/dms/
-
-      #- name: Update Odoo Database
-       # run: |
-       #     ssh root@103.19.4.104 "sudo -u odoo /opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u all"
-        
-      - name: Start Odoo Server #just edit this
+          scp -r ./addons/* root@103.19.4.104:/opt/odoo17/addons/
+          
+      - name: Update Odoo Database
         run: |
-            ssh root@103.19.4.104 "sudo systemctl start odoo"
-        
+          ssh root@103.19.4.104 "sudo -u odoo /odoo-venv/bin/python /opt/odoo/odoo-bin -c /opt/odoo/debian/odoo.conf -d Not4ProfitOrganisation -u all
+          "
+
+      - name: Start Odoo Server
+        run: |
+          ssh root@103.19.4.104 "sudo systemctl start odoo"
