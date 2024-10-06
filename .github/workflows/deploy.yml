@@ -23,9 +23,7 @@ jobs:
           pip install wheel
           pip install cryptography
           pip install -r /opt/odoo/requirements.txt
-      #- name: Install dependencies
-       # run: |
-       #   pip install -r requirements.txt 
+       
 
       - name: Set up SSH key
         env:
