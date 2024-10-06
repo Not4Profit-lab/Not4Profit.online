@@ -18,8 +18,29 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget git python3-dev python3-pip build-essential libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev libpq-dev
 
+      - name: List root directory
+        run: ls -l /
+
+      - name: List odoo-venv directory
+        run: ls -l /odoo-venv
+
+      - name: List bin directory
+        run: ls -l /odoo-venv/bin
+
       - name: Activate virtual environment
-        run: source /odoo-venv/bin/activate
+        run: |
+          echo "Activating virtual environment..."
+          if [ -f /odoo-venv/bin/activate ]; then
+            source /odoo-venv/bin/activate
+            echo "Virtual environment activated"
+          else
+            echo "Activate script not found!"
+            exit 1
+          fi
+
+
+   #   - name: Activate virtual environment
+   #     run: source /odoo-venv/bin/activate
   
       - name: Check if requirements.txt exists
         run: ls -l /opt/odoo/requirements.txt
@@ -27,8 +48,8 @@ jobs:
       - name: Change to the odoo directory
         run: cd /opt/odoo
   
-      - name: Install from requirements.txt
-        run: pip install -r /opt/odoo/requirements.txt
+   #   - name: Install from requirements.txt
+   #     run: pip install -r /opt/odoo/requirements.txt
 
       - name: Install Odoo dependencies
         run: |
