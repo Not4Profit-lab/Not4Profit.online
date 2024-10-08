@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  
+      - wincave-module-branch
 
 jobs:
   deploy:
@@ -55,68 +56,82 @@ jobs:
      #   run: |
      #     ssh root@103.19.4.104 "sudo systemctl stop odoo || sudo pkill -f '/opt/odoo/odoo-bin'"
 
-      - name: Deploy to Odoo Server
+
+
+      # Deploy only the Wincave module for wincave-module-branch
+      - name: Deploy Wincave Module
+        if: github.ref == 'refs/heads/wincave-module-branch'
         run: |
-         scp -r ./addons/account_move_multi_cancel root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/advance_cash_flow_statements root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/advanced_project_management_system root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/app_menu_alphabetical_order root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/auto_daily_weekly_report root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/base_account_budget root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/base_accounting_kit root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/bi_sms_client_generic root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/chatgpt_support_chatter root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/contact_documents root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/contacts_birthday_greetings root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/database_delete_protection root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/developer_mode root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/document_approval root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/dropbox_integration root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/easy_chatgpt_access root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/education_core root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/education_theme root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/event root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/event_management root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/event_registration_cancel_reason root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/event_registration_partner_unique root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/google_analytics_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/import_bank_statement_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/insurance_management_cybro root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/invoice_merging root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/LDAP-Reset-Password-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/mail_push_notification root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/master_search root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/membership root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/Membership_rotary_modification-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/multiple_payment_for_outstanding_dues root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/odoo_dynamic_dashboard root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/odoo_google_meet_integration root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/odoo_readonly_user root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/odoo_website_helpdesk root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/openai_odoo_base root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/partner_emails_history root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/partner_event root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/print_minutes_of_meeting root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/project_dashboard_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/project_progress_bar root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/projects_task_checklists root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/public_helpdesk-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/reset_journal_entries root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/restrict_web_debug root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/Rotary_project_map-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/schedule_activity_to_multiple_users root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/size_restriction_for_attachments root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/subscription_package root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/trial_balance_pdf root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/upload_multi_document root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/user_login_alert root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/volunteers_donors_management root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/website_event root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/website_floating_whatsapp_icon root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/website_gdpr_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/website_google_tag_manager root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/website_pdf_preview_snippet root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
-         scp -r ./addons/whatsapp_mail_messaging root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          echo "Deploying only Wincave module..."
+          scp -r ./addons/payment_windcave root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+
+
+    # Deploy all modules for the main branch
+      - name: Deploy to Odoo Server
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Deploying all modules..."
+
+          scp -r ./addons/account_move_multi_cancel root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/advance_cash_flow_statements root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/advanced_project_management_system root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/app_menu_alphabetical_order root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/auto_daily_weekly_report root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/base_account_budget root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/base_accounting_kit root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/bi_sms_client_generic root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/chatgpt_support_chatter root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/contact_documents root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/contacts_birthday_greetings root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/database_delete_protection root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/developer_mode root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/document_approval root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/dropbox_integration root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/easy_chatgpt_access root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/education_core root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/education_theme root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/event root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/event_management root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/event_registration_cancel_reason root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/event_registration_partner_unique root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/google_analytics_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/import_bank_statement_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/insurance_management_cybro root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/invoice_merging root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/LDAP-Reset-Password-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/mail_push_notification root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/master_search root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/membership root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/Membership_rotary_modification-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/multiple_payment_for_outstanding_dues root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/odoo_dynamic_dashboard root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/odoo_google_meet_integration root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/odoo_readonly_user root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/odoo_website_helpdesk root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/openai_odoo_base root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/partner_emails_history root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/partner_event root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/print_minutes_of_meeting root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/project_dashboard_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/project_progress_bar root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/projects_task_checklists root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/public_helpdesk-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/reset_journal_entries root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/restrict_web_debug root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/Rotary_project_map-main root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/schedule_activity_to_multiple_users root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/size_restriction_for_attachments root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/subscription_package root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/trial_balance_pdf root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/upload_multi_document root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/user_login_alert root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/volunteers_donors_management root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/website_event root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/website_floating_whatsapp_icon root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/website_gdpr_odoo root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/website_google_tag_manager root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/website_pdf_preview_snippet root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+          scp -r ./addons/whatsapp_mail_messaging root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
          
 
 

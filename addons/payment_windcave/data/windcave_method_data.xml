@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="windcave_method_card" model="windcave.method">
+        <field name="name">Card</field>
+        <field name="code">card</field>
+    </record>
+    
+    <record id="windcave_method_account2account" model="windcave.method">
+        <field name="name">Account 2 account</field>
+        <field name="code">account2account</field>
+    </record>
+
+    <record id="windcave_method_alipay" model="windcave.method">
+        <field name="name">Alipay</field>
+        <field name="code">alipay</field>
+    </record>
+
+    <record id="windcave_method_applepay" model="windcave.method">
+        <field name="name">Apple Pay</field>
+        <field name="code">applepay</field>
+    </record>
+
+    <record id="windcave_method_googlepay" model="windcave.method">
+        <field name="name">Google Pay</field>
+        <field name="code">googlepay</field>
+    </record>
+
+    <record id="windcave_method_interac" model="windcave.method">
+        <field name="name">Interac</field>
+        <field name="code">interac</field>
+    </record>
+
+    <record id="windcave_method_unionpay" model="windcave.method">
+        <field name="name">UnionPay</field>
+        <field name="code">unionpay</field>
+    </record>
+
+    <record id="windcave_method_humm" model="windcave.method">
+        <field name="name">Humm</field>
+        <field name="code">humm</field>
+    </record>
+
+    <record id="windcave_method_visacheckout" model="windcave.method">
+        <field name="name">Visa Checkout</field>
+        <field name="code">visacheckout</field>
+    </record>
+
+    <record id="windcave_method_wechat" model="windcave.method">
+        <field name="name">WeChat</field>
+        <field name="code">wechat</field>
+    </record>
+</odoo>

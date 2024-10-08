@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="windcave_transaction_tree" model="ir.ui.view">
+      <field name="name">windcave.transaction.tree</field>
+      <field name="model">windcave.transaction</field>
+      <field name="arch" type="xml">
+          <tree string="Transactions" create="false" delete="false" edit="false">
+              <field name="order_id"/>
+              <field name="transaction_id"/>
+              <field name="parent_transaction_id"/>
+              <field name="transaction_type"/>
+              <field name="amount"/>
+              <field name="currency"/>
+              <field name="status"/>
+          </tree>
+      </field>
+  </record>
+
+  <record id="windcave_transaction_form" model="ir.ui.view">
+      <field name="name">windcave.transaction.form</field>
+      <field name="model">windcave.transaction</field>
+      <field name="arch" type="xml">
+          <form string="Transactions" create="false" delete="false" edit="false">
+              <sheet>
+                  <group>
+                      <group>
+                          <field name="order_id"/>
+                          <field name="reference"/>
+
+                          <field name="transaction_id"/>
+                          <field name="parent_transaction_id"/>
+
+                          <field name="transaction_type"/>  
+                          <field name="status"/>                  
+
+                          <field name="amount"/>
+                          <field name="currency"/>
+                          <field name="payment_method"/>
+
+                          <field name="response_code"/>
+                          <field name="response_text"/>
+                      </group>
+                      <group>
+                          <field name="payment_authentication"/>
+                          <field name="auth_code"/>
+
+                          <field name="cvc2_result"/>
+
+                          <field name="avs_action"/>
+                          <field name="avs_description"/>
+
+                          <field name="risk_action"/>
+                          <field name="risk_summary"/>
+
+                          <field name="card_holder"/>
+                          <field name="card_number"/>
+                          <field name="card_expiration"/>
+                          <field name="card_brand"/>
+                      </group>
+                  </group>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+  <record id="action_windcave_payment_acquirer" model="ir.actions.act_window">
+      <field name="name">Windcave</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">windcave.transaction</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          No Windcave transactions yet.
+        </p>
+      </field>
+  </record>
+
+  <menuitem id="windcave_payment_acquirer" name="Windcave Transactions" action="action_windcave_payment_acquirer"/> 
+
+  <record id="payment_provider_form" model="ir.ui.view">
+      <field name="name"> Windcave Provider Form</field>
+      <field name="model">payment.provider</field>
+      <field name="inherit_id" ref="payment.payment_provider_form"/>
+      <field name="arch" type="xml">
+          <group name="provider_credentials" position='after'>
+              <group invisible="code != 'windcave'">
+                  <field name="windcave_api_url"/>
+                  <field name="windcave_api_user"/>
+                  <field name="windcave_api_key"/>
+              </group>
+          </group>
+          <xpath expr="//field[@name='allow_tokenization']" position="before">
+              <field name="windcave_payment_methods" widget="many2many_checkboxes" invisible="code != 'windcave'"/>
+          </xpath>
+      </field>
+  </record>
+
+  <record id="transaction_form_windcave" model="ir.ui.view">
+      <field name="name">Windcave Transaction Form</field>
+      <field name="model">payment.transaction</field>
+      <field name="inherit_id" ref="payment.payment_transaction_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//button[@name='action_void']" position="after">
+              <button 
+                type="object" name="action_show_refund_wizard" string="Refund Transaction" class="oe_highlight" 
+                invisible="(provider_code != 'windcave') or (state != 'done') or (windcave_result != 'approved') or (windcave_fully_refunded == True) or (windcave_pending_transactions > 0)"/>
+              <button 
+                type="object" name="action_query_transaction" string="Query Transaction" class="oe_highlight" 
+                invisible = "(provider_code != 'windcave') or ((windcave_pending_transactions == 0) and (state != 'pending'))"/>
+          </xpath>
+          <xpath expr="//button[@name='action_capture']" position="attributes">
+              <attribute name="invisible">(windcave_pending_transactions &gt; 0) or (state != 'authorized')</attribute>
+          </xpath>
+          <xpath expr="//button[@name='action_void']" position="attributes">
+            <attribute name="invisible">windcave_pending_transactions &gt; 0</attribute>
+          </xpath>
+          <xpath expr="//field[@name='token_id']" position="attributes">
+              <attribute name="invisible">provider_code == 'windcave'</attribute>
+          </xpath>
+          <xpath expr="//field[@name='provider_reference']" position="after">
+              <field name="windcave_payment_exists" readonly="1" invisible="provider_code != 'windcave'"/>
+              <field name="windcave_result" readonly="1" invisible="provider_code != 'windcave'" />
+              <field name="windcave_amount_refunded" readonly="1" invisible="provider_code != 'windcave'" />
+              <field name="windcave_pending_transactions" readonly="1" invisible="provider_code != 'windcave'" />
+              <field name="windcave_fully_refunded" readonly="1" invisible="1"/>
+          </xpath>
+      </field>
+  </record>
+</odoo>

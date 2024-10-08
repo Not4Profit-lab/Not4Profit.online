@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_menu_windcave_cards" name="Portal layout : windcave cards menu entries" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'windcave-card'" t-attf-class="breadcrumb-item">
+                Windcave Saved Cards
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_windcave_cards" name="Windcave Saved Cards" customize_show="True" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Windcave Saved Cards</t>
+                <t t-set="url" t-value="'/my/windcave-saved-cards'"/>
+                <t t-set="placeholder_count" t-value="'windcave_card_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_windcave_cards" name="My Windcave Saved Cards">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Saved Cards</t>
+            </t>
+            <t t-if="not cards">
+                <p>There are currently no saved cards for your account.</p>
+            </t>
+            <t t-if="cards" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Card Number</th>
+                        <th>Expiration Date</th>
+                        <th>Date Added</th>
+                        <th class="text-right">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="cards" t-as="card">
+                        <tr>
+                            <td><span t-field="card.windcave_card_number"/></td>
+                            <td><span t-field="card.windcave_card_expiration"/></td>
+                            <td><span t-field="card.write_date"/></td>
+                            <td class="text-right"><span>
+                                <a class="btn btn-primary" t-attf-href="/my/windcave-saved-cards/{{ slug(card) }}/delete">
+                                    Delete
+                                </a>
+                            </span>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="windcave_refund_wizard_form" model="ir.ui.view">
+        <field name="name">windcave.transaction.refund.form.view</field>
+        <field name="model">windcave.transaction.refund.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="refund_amount" />
+                </group>
+                <footer>
+                    <button string="Confirm" name="confirm_refund"  type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel" class="btn btn-default"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

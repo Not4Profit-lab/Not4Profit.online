@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="payment_provider_windcave" model="payment.provider">
+        <field name="name">Windcave</field>
+        <field name="code">windcave</field>
+        <field name="image_128" type="base64" file="payment_windcave/static/src/img/windcave_icon.png"/>
+        <field name="redirect_form_view_id" ref="windcave_form"/>
+        <field name="allow_tokenization">True</field>
+        <field name="support_tokenization">True</field>
+        <field name="support_manual_capture">full_only</field>
+        <field name="support_refund">partial</field>
+        <field name="payment_method_ids"
+                eval="[Command.set([
+                          ref('payment.payment_method_card'),
+                      ])]"
+        />
+    </record>
+</odoo>

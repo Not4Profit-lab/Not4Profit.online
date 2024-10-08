@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_windcave_method,access.windcave.method,model_windcave_method,,1,1,1,1
+access_windcave_transaction,access.windcave.transaction,model_windcave_transaction,,1,1,1,1
+access_windcave_session,access.windcave.session,model_windcave_session,,1,1,1,1
+access_windcave_transaction_refund_wizard,access.windcave.transaction.refund.wizard,model_windcave_transaction_refund_wizard,,1,1,1,1

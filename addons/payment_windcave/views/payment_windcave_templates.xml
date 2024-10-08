@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="windcave_form">
+        <form t-att-action="windcave_action_url" method="post">
+            <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
+            <input type="hidden" name="windcave_redirect_url" t-att-value="windcave_redirect_url"/>
+            <input type="hidden" name="windcave_payment_exists" t-att-value="windcave_payment_exists"/>
+            <input type="hidden" name="reference" t-att-value="reference"/>
+            <input type="hidden" name="windcave_result" t-att-value="windcave_result"/>
+            <input type="hidden" name="windcave_amount_refunded" t-att-value="windcave_amount_refunded"/>
+            <input type="hidden" name="windcave_pending_transactions" t-att-value="windcave_pending_transactions"/>
+            <input type="hidden" name="windcave_fully_refunded" t-att-value="windcave_fully_refunded"/>
+        </form>
+    </template>
+</odoo>
