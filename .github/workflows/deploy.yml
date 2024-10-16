@@ -51,10 +51,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 103.19.4.104 >> ~/.ssh/known_hosts
 
-     # - name: Stop Odoo Server
-     #   run: |
-     #     ssh root@103.19.4.104 "sudo systemctl stop odoo || sudo pkill -f '/opt/odoo/odoo-bin'"
-
       - name: Deploy to Odoo Server
         run: |
          scp -r ./addons/account_move_multi_cancel root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
