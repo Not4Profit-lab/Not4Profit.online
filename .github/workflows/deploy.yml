@@ -25,11 +25,7 @@ jobs:
             pip install --upgrade pip  
             pip install wheel cryptography  
 
-     # - name: Install Odoo dependencies
-      #  run: |
-      #    pip install wheel
-       #   pip install cryptography
-       
+     
 
       - name: Set up SSH key
         env:
