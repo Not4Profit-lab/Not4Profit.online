@@ -23,6 +23,8 @@ jobs:
         run: |
             python -m venv /opt/odoo/odoo-venv
             source /opt/odoo/odoo-venv/bin/activate
+            pip install wheel
+            pip install cryptography
        #     pip install -r /opt/odoo/requirements.txt
 
    #   - name: Activate virtual environment
@@ -37,10 +39,10 @@ jobs:
    #   - name: Install from requirements.txt
    #     run: pip install -r /opt/odoo/requirements.txt
 
-      - name: Install Odoo dependencies
-        run: |
-          pip install wheel
-          pip install cryptography
+    #  - name: Install Odoo dependencies
+    #    run: |
+    #      pip install wheel
+    #      pip install cryptography
        
 
       - name: Set up SSH key
