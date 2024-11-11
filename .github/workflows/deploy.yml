@@ -98,6 +98,8 @@ jobs:
          scp -r ./addons/website_google_tag_manager root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
          scp -r ./addons/website_pdf_preview_snippet root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
          scp -r ./addons/whatsapp_mail_messaging root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+         scp -r ./addons/user_audit root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
+         scp -r ./addons/hide_menu_user root@103.19.4.104:/opt/odoo/addons/Not4Profit.online/addons/
          
 
 
